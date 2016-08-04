@@ -1,5 +1,3 @@
-from collections import namedtuple
-
 
 class GenericPage:
     pass
@@ -15,15 +13,15 @@ class ColumnPage(GenericPage):
 
 class LoadType:
 
-    def __init__(page_formatter, stage_types, category,
+    def __init__(self, page_formatter, stage_types, category,
                  children=None, cobol_category=None,
                  cobol_children=None):
         self.page_formatter = page_formatter
-        self.stage_types = _convert_to_list(stage_types)
+        self.stage_types = self._convert_to_list(stage_types)
         self.category = category
-        self.children = _convert_to_list(children)
+        self.children = self._convert_to_list(children)
         self.cobol_category = cobol_category
-        self.cobol_children = _convert_to_list(cobol_children)
+        self.cobol_children = self._convert_to_list(cobol_children)
 
     def _convert_to_list(string_or_list):
         if isinstance(string_or_list, str):
