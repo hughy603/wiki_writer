@@ -13,11 +13,11 @@ class ColumnPage(GenericPage):
 
 class LoadType:
 
-    def __init__(self, page_formatter, stage_types, category,
+    def __init__(self, page_formatter, stage_type, category,
                  children=None, cobol_category=None,
                  cobol_children=None):
         self.page_formatter = page_formatter
-        self.stage_types = self._convert_to_list(stage_types)
+        self.stage_type = stage_type
         self.category = category
         self.children = self._convert_to_list(children)
         self.cobol_category = cobol_category
@@ -28,8 +28,15 @@ class LoadType:
             string_or_list = [string_or_list]
         return string_or_list
 
+    def __str__(self):
+        return ('A page for the asset type {self.stage_type} '
+                'formatted by {self.page_formatter}. '
+                'The page belongs to the category {self.category} '
+                'and contains {self.children} asset types'
+                .format(self=self))
 
-page_type_to_format = {
+
+type_format_map = {
     'host': LoadType(GenericPage, 'host', 'Hosts', 'database'),
     'database': LoadType(GenericPage, 'database', 'Databases',
                          'schema', 'Subject Matter', 'Copybooks'),
@@ -46,13 +53,13 @@ def write_page(pk, load_type):
     """ Writes the page for a specific primary key using
     the provided page formatting class
     """
-    pass
+    print('Writing the page',pk,'for the load type',load_type)
 
 
 def write_all_pages(page_type):
     """ Writes every uncomitted page for the specific type
     """
-    load_type = page_type_to_format[page_type]
+    load_type = type_format_map[page_type]
     modified_pages = get_all_modified_pages(page_type)
     for modified_page in modified_pages:
         write_page(modified_page, load_type)
